@@ -186,7 +186,42 @@ bool RecentBooksStore::loadFromBinaryFile() {
   return true;
 }
 
-bool RecentBooksStore::isPinned(const std::string& path) const { ... }
-void RecentBooksStore::setPinned(const std::string& path, bool pinned) { ... }
-bool RecentBooksStore::togglePinned(const std::string& path) { ... }
-int  RecentBooksStore::getPinnedCount() const { ... }
+bool RecentBooksStore::isPinned(const std::string& path) const {
+  for (const RecentBook& book : recentBooks) {
+    if (book.path == path) {
+      return book.pinned;
+    }
+  }
+  return false;
+}
+
+void RecentBooksStore::setPinned(const std::string& path, bool pinned) {
+  for (RecentBook& book : recentBooks) {
+    if (book.path == path) {
+      if (book.pinned != pinned) {
+        book.pinned = pinned;
+        saveToFile();
+      }
+      break;
+    }
+  }
+}
+
+bool RecentBooksStore::togglePinned(const std::string& path) {
+  for (RecentBook& book : recentBooks) {
+    if (book.path == path) {
+      book.pinned = !book.pinned;
+      saveToFile();
+      return book.pinned;
+    }
+  }
+  return false;
+}
+
+int RecentBooksStore::getPinnedCount() const {
+  int count = 0;
+  for (const RecentBook& book : recentBooks) {
+    if (book.pinned) count++;
+  }
+  return count;
+}
