@@ -222,7 +222,7 @@ void HomeActivity::loop() {
       onSettingsOpen();
     }
   }
-    if (mappedInput.wasReleased(MappedInputManager::Button::Back)) {
+  if (mappedInput.wasReleased(MappedInputManager::Button::Back)) {
     if (selectorIndex < static_cast<int>(recentBooks.size())) {
       const RecentBook& selectedBook = recentBooks[selectorIndex];
       const int maxPinned = UITheme::getInstance().getMetrics().homeRecentBooksCount;
@@ -230,7 +230,7 @@ void HomeActivity::loop() {
         std::string toggledPath = selectedBook.path;
         RECENT_BOOKS.togglePinned(toggledPath);
         loadRecentBooks(maxPinned);
-        
+
         // Track the book's new position so the selection cursor follows it
         for (int i = 0; i < static_cast<int>(recentBooks.size()); ++i) {
           if (recentBooks[i].path == toggledPath) {
@@ -238,7 +238,7 @@ void HomeActivity::loop() {
             break;
           }
         }
-        
+
         // Invalidate the cover buffer so it re-renders in the correct order
         freeCoverBuffer();
         coverRendered = false;
@@ -286,9 +286,9 @@ void HomeActivity::render(RenderLock&&) {
   const char* backLabel = "";
   if (selectorIndex < static_cast<int>(recentBooks.size())) {
     if (recentBooks[selectorIndex].pinned) {
-       backLabel = tr(STR_UNPIN);
+      backLabel = tr(STR_UNPIN);
     } else if (RECENT_BOOKS.getPinnedCount() < metrics.homeRecentBooksCount) {
-       backLabel = tr(STR_PIN);
+      backLabel = tr(STR_PIN);
     }
   }
   const auto labels = mappedInput.mapLabels(backLabel, tr(STR_SELECT), tr(STR_DIR_UP), tr(STR_DIR_DOWN));
