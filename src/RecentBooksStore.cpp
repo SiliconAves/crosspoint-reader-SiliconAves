@@ -34,16 +34,16 @@ void RecentBooksStore::addBook(const std::string& path, const std::string& title
   // Add to front
   recentBooks.insert(recentBooks.begin(), {path, title, author, coverBmpPath, wasPinned});
 
-   // Trim to max size, preferring to evict unpinned books
-   if (recentBooks.size() > MAX_RECENT_BOOKS) {
-     auto evictIt = std::find_if(recentBooks.rbegin(), recentBooks.rend(),
-         [](const RecentBook& book) { return !book.pinned; });
-     if (evictIt != recentBooks.rend()) {
-       recentBooks.erase(std::next(evictIt).base());
-     } else {
-       recentBooks.pop_back();
-     }
-   }
+  // Trim to max size, preferring to evict unpinned books
+  if (recentBooks.size() > MAX_RECENT_BOOKS) {
+    auto evictIt = 
+    std::find_if(recentBooks.rbegin(), recentBooks.rend(),[](const RecentBook& book) { return !book.pinned; });
+    if (evictIt != recentBooks.rend()) {
+      recentBooks.erase(std::next(evictIt).base());
+    } else {
+      recentBooks.pop_back();
+    }
+  }
 
   saveToFile();
 }
